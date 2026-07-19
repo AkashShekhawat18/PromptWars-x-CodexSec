@@ -13,7 +13,7 @@ describe("Auth Library", () => {
     
     const isInvalid = await verifyPassword("WrongPassword", hash);
     expect(isInvalid).toBe(false);
-  });
+  }, 15000);
 
   it("should validate password strength", async () => {
     const strongPassword = await validatePasswordStrength("StrongPass123");

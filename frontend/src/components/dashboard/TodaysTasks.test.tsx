@@ -36,7 +36,7 @@ describe("TodaysTasks Component", () => {
   it("should display a loading state initially", () => {
     vi.mocked(tasksAPI.getTasks).mockImplementation(() => new Promise(() => {})); // never resolves
     renderComponent();
-    expect(screen.getByText("Today's Focus")).toBeInTheDocument();
+    expect(screen.getByText("Top Task Priority")).toBeInTheDocument();
     // Assuming loading state renders pulsing divs
     expect(document.querySelector(".animate-pulse")).toBeInTheDocument();
   });
@@ -57,7 +57,7 @@ describe("TodaysTasks Component", () => {
     renderComponent();
 
     await waitFor(() => {
-      expect(screen.getByText("No tasks yet. Add one or let AI plan your day!")).toBeInTheDocument();
+      expect(screen.getByText("Create your first task or let AI generate today's plan.")).toBeInTheDocument();
     });
 
     const addBtns = screen.getAllByText(/Add Task/i);
@@ -90,7 +90,7 @@ describe("TodaysTasks Component", () => {
     const planBtn = screen.getByText(/AI Plan/);
     fireEvent.click(planBtn);
 
-    expect(planBtn).toHaveTextContent("Planning...");
+    expect(planBtn).toHaveTextContent("Planning your schedule...");
 
     await waitFor(() => {
       expect(screen.getByText("AI Generated Task")).toBeInTheDocument();

@@ -36,7 +36,7 @@ describe("TodaysTasks Component", () => {
   it("should display a loading state initially", () => {
     vi.mocked(tasksAPI.getTasks).mockImplementation(() => new Promise(() => {})); // never resolves
     renderComponent();
-    expect(screen.getByText("Top Task Priority")).toBeInTheDocument();
+    expect(screen.getByText("Today's Focus")).toBeInTheDocument();
     // Assuming loading state renders pulsing divs
     expect(document.querySelector(".animate-pulse")).toBeInTheDocument();
   });

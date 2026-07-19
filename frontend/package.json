@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:unit": "vitest run --testPathPattern=src/components|src/lib",
+    "test:integration": "vitest run --testPathPattern=src/app/api",
+    "test:e2e": "playwright test",
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
@@ -49,6 +52,7 @@
     "zustand": "^5.0.14"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "@tailwindcss/postcss": "^4",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
@@ -61,6 +65,7 @@
     "@types/three": "^0.185.1",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react": "^6.0.3",
+    "@vitest/coverage-v8": "^4.1.10",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
     "jsdom": "^29.1.1",

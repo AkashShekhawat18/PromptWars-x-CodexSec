@@ -30,7 +30,7 @@ describe("Tasks API", () => {
     });
 
     it("should return tasks for authorized user", async () => {
-      vi.mocked(requireAuthUser).mockResolvedValue({ id: "user-1", email: "u@test.com", role: "USER", status: "ACTIVE" });
+      vi.mocked(requireAuthUser).mockResolvedValue({ id: "user-1", email: "u@test.com", role: "USER", status: "ACTIVE" } as any);
       vi.mocked(prisma.task.findMany).mockResolvedValue([
         { id: "task-1", title: "Task 1", userId: "user-1" } as any
       ]);
@@ -63,14 +63,14 @@ describe("Tasks API", () => {
     });
 
     it("should reject invalid task data", async () => {
-      vi.mocked(requireAuthUser).mockResolvedValue({ id: "user-1", email: "u@test.com", role: "USER", status: "ACTIVE" });
+      vi.mocked(requireAuthUser).mockResolvedValue({ id: "user-1", email: "u@test.com", role: "USER", status: "ACTIVE" } as any);
       const req = createRequest({ priority: "HIGH" }); // missing title
       const res = await POST(req);
       expect(res.status).toBe(400);
     });
 
     it("should create a task successfully", async () => {
-      vi.mocked(requireAuthUser).mockResolvedValue({ id: "user-1", email: "u@test.com", role: "USER", status: "ACTIVE" });
+      vi.mocked(requireAuthUser).mockResolvedValue({ id: "user-1", email: "u@test.com", role: "USER", status: "ACTIVE" } as any);
       vi.mocked(prisma.task.create).mockResolvedValue({
         id: "new-task",
         title: "Buy groceries",

@@ -43,7 +43,7 @@ describe("POST /api/auth/signup", () => {
 
   it("should fail if email exists", async () => {
     const req = createRequest({ email: "existing@example.com", password: "strongpassword123" });
-    vi.mocked(prisma.user.findUnique).mockResolvedValue({ id: "1" });
+    vi.mocked(prisma.user.findUnique).mockResolvedValue({ id: "1" } as any);
     
     const res = await POST(req);
     expect(res.status).toBe(409);
@@ -60,7 +60,7 @@ describe("POST /api/auth/signup", () => {
       name: "New User",
       role: "USER",
       status: "PENDING"
-    });
+    } as any);
 
     const res = await POST(req);
     expect(res.status).toBe(200);

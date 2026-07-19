@@ -8,7 +8,7 @@ const MAX_MESSAGE_LENGTH = 4000;
 
 export async function POST(req: NextRequest) {
   try {
-    await requireAuthUser();
+    const user = await requireAuthUser();
 
     // Limit request body size
     const bodySize = parseInt(req.headers.get("content-length") || "0", 10);

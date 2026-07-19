@@ -1,0 +1,59 @@
+name: Production Release
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  audit-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: './frontend/package-lock.json'
+
+      - name: Install Dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Generate Prisma Client
+        working-directory: ./frontend
+        run: npx prisma generate
+
+      - name: Type Check
+        working-directory: ./frontend
+        run: npx tsc --noEmit
+
+      - name: Lint
+        working-directory: ./frontend
+        run: npm run lint
+
+      - name: Build Application
+        working-directory: ./frontend
+        run: npm run build
+        env:
+          # Note: Next.js requires these at build time if components depend on them
+          DATABASE_URL: "postgresql://user:password@localhost:5432/neuroflow?schema=public"
+          GEMINI_API_KEY: "dummy-key-for-build"
+
+  docker-build:
+    needs: audit-and-build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        working-directory: ./frontend
+        run: docker build -t neuroflow-ai:latest .
